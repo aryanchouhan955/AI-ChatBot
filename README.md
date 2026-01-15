@@ -1,16 +1,68 @@
-# React + Vite
+# 🧠 AI Chatbot Web Application
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Project Description
 
-Currently, two official plugins are available:
+This project is a **modern AI-powered chatbot web application** built using **React** and integrated with the **Gemini API**.  
+It provides an interactive chat experience similar to ChatGPT, featuring real-time responses, conversation history, and a clean dark-themed user interface.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+The application is designed with a **modular architecture**, ensuring scalability, maintainability, and stability while avoiding common React issues such as message disappearance and incorrect re-renders.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## 🎯 Objectives of the Project
 
-## Expanding the ESLint configuration
+The primary objectives of this project are:
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- To build a **real-world AI chatbot interface**
+- To learn and apply **best practices in React development**
+- To implement **clean state management** for dynamic chat data
+- To design a **modular and extensible frontend architecture**
+- To prevent UI bugs caused by unstable keys and shared state
+
+---
+
+## 🧩 Key Features
+
+- 💬 AI-powered conversations using Gemini API  
+- 🗂️ Sidebar with conversation history  
+- ✍️ Typewriter-style chatbot replies  
+- 🌙 Dark theme UI  
+- 📱 Responsive layout  
+- 🧠 Stable message identity using unique IDs  
+- 🧩 Modular components and reusable hooks  
+
+---
+
+## 🛠️ Technologies Used
+
+- **Frontend:** React (Functional Components & Hooks)
+- **Styling:** Tailwind CSS
+- **AI Integration:** Gemini Software Development Kit API 
+- **State Management:** React `useState`, custom hooks
+- **Markdown Rendering:** `react-markdown` with `remark-gfm`
+---
+
+
+
+## 🧠 How the Application Works
+
+1. User sends a message through the input field  
+2. The message is added to the active conversation with a unique ID  
+3. An AI placeholder message is created  
+4. The Gemini API generates a response  
+5. The response is displayed using a typewriter effect  
+6. The conversation history is updated in the sidebar  
+
+Each message is tracked using **stable unique identifiers**, preventing React from reusing incorrect DOM elements.
+
+---
+
+## 📁 Project Structure
+#### src/
+#### ├─ components/ # UI components (Sidebar, ChatHeader, ChatMessages, ChatInput)
+#### ├─ hooks/ # Custom hooks (typing logic)
+#### ├─ utils/ # Utility functions (ID generation)
+#### ├─ App.jsx # Main application logic
+#### ├─ App.css # Global styles
+#### └─ main.jsx # Entry point
+

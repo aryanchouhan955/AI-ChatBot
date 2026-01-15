@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
 
-export function useTypewriter(text = "", speed = 15) {
-  const [displayed, setDisplayed] = useState("");
+export function useTypewriter(text, speed = 20) {
+  const [output, setOutput] = useState("");
 
   useEffect(() => {
-    if (typeof text !== "string" || !text.length) {
-      setDisplayed("");
+    if (!text) {
+      setOutput("");
       return;
     }
 
-    setDisplayed("");
-    let i = 0;
+    let index = 0;
+    setOutput(""); // reset cleanly
 
     const interval = setInterval(() => {
-      setDisplayed(prev => prev + text.charAt(i));
-      i++;
+      index += 1;
+      setOutput(text.slice(0, index));
 
-      if (i >= text.length) clearInterval(interval);
+      if (index >= text.length) {
+        clearInterval(interval);
+      }
     }, speed);
 
     return () => clearInterval(interval);
   }, [text, speed]);
 
-  return displayed;
+  return output;
 }
-

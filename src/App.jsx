@@ -1,117 +1,98 @@
 import { useState } from "react";
-import ReactMarkdown from "react-markdown";
-import remarkGfm from "remark-gfm";
-import { useTypewriter } from "./typewriter";
 import ai from "./BackEnd";
-import "./App.css";
+import { genId } from "./utils/id";
+import { useChatTyping } from "./hooks/useChatTyping";
 
-function App() {
+import Sidebar from "./components/Sidebar";
+import ChatHeader from "./components/ChatHeader";
+import ChatMessages from "./components/ChatMessages";
+import ChatInput from "./components/ChatInput";
+
+export default function App() {
+  
+  const [conversations, setConversations] = useState([
+    { id: genId(), title: "New Conversation", messages: [] },
+  ]);
+  const [activeId, setActiveId] = useState(conversations[0].id);
   const [query, setQuery] = useState("");
-  const [answer, setAnswer] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(true);
   const [loading, setLoading] = useState(false);
 
-  const typedAnswer = useTypewriter(answer, 12);
+  const { typingMessageId, setTypingMessageId, setTypingText, typedText } =
+    useChatTyping(setConversations);
 
-  const ask_query = async () => {
-    if (!query.trim()) return;
+  const active = conversations.find(c => c.id === activeId);
 
+  const send = async () => {
+    if (!query.trim() || loading) return;
     setLoading(true);
-    setAnswer("");
+
+    const user = { id: genId(), role: "user", text: query };
+    const aiMsg = { id: genId(), role: "ai", text: "", isTyping: true };
+
+    setConversations(prev =>
+      prev.map(c => {
+        if (c.id !== activeId) return c;
+
+        const isFirstMessage = c.messages.length === 0;
+
+        return {
+          ...c,
+          title: isFirstMessage
+            ? user.text.slice(0, 40) + (user.text.length > 40 ? "..." : "")
+            : c.title,
+          messages: [...c.messages, user, aiMsg],
+        };
+      })
+    );
+
+
+    setQuery("");
 
     try {
-      const response = await ai.models.generateContent({
+      const res = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
-        contents: query,
+        contents: user.text,
       });
-
-      // official SDK returns text here
-      const reply = response.text ?? "";
-      setAnswer(reply);
-
-    } catch (err) {
-      console.error("Gemini API error:", err);
-      setAnswer("Something broke. Probably not your fault.");
+      setTypingMessageId(aiMsg.id);
+      setTypingText(res.text ?? "No response.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="grid grid-cols-5 h-screen bg-zinc-900 text-zinc-100">
+    <div className="flex h-screen bg-gray-900 text-gray-100">
+      <Sidebar
+        open={sidebarOpen}
+        conversations={conversations}
+        activeId={activeId}
+        onSelect={setActiveId}
+        onNewChat={() =>
+          setConversations([{ id: genId(), title: "New Conversation", messages: [] }, ...conversations])
+        }
+      />
 
-      {/* Sidebar */}
-      <aside className="col-span-1 bg-zinc-800 p-4 border-r border-zinc-700">
-        <h2 className="font-semibold mb-4">History</h2>
-        <p className="text-sm text-zinc-400">
-          (You can add chat history here later.)
-        </p>
-      </aside>
+      <div className="flex-1 flex flex-col">
+        <ChatHeader
+          title={active.title}
+          count={active.messages.length}
+          onToggle={() => setSidebarOpen(!sidebarOpen)}
+        />
 
-      {/* Chat Screen */}
-      <main className="col-span-4 flex flex-col">
+        <ChatMessages
+          messages={active.messages}
+          typedText={typedText}
+          typingMessageId={typingMessageId}
+        />
 
-        {/* Header */}
-        <header className="bg-zinc-800 px-6 py-4 border-b border-zinc-700 font-semibold">
-          AI Chatbot
-        </header>
-
-        {/* Conversation */}
-        <div className="flex-1 overflow-y-auto px-6 py-4 bg-zinc-900">
-          {loading && (
-            <p className="text-sm text-zinc-400">Thinking…</p>
-          )}
-
-          {typedAnswer && (
-            <div className="max-w-3xl bg-zinc-800 rounded-xl p-5 mt-4 leading-relaxed">
-              <ReactMarkdown
-                remarkPlugins={[remarkGfm]}
-                components={{
-                  h1: ({ node, ...props }) => (
-                    <h1 className="text-xl font-bold mt-4 mb-2" {...props} />
-                  ),
-                  h2: ({ node, ...props }) => (
-                    <h2 className="text-lg font-semibold mt-4 mb-2" {...props} />
-                  ),
-                  h3: ({ node, ...props }) => (
-                    <h3 className="text-base font-semibold mt-3 mb-1" {...props} />
-                  ),
-                  p: ({ node, ...props }) => (
-                    <p className="text-sm mb-3" {...props} />
-                  ),
-                  li: ({ node, ...props }) => (
-                    <li className="ml-5 list-disc text-sm mb-1" {...props} />
-                  ),
-                }}
-              >
-                {typedAnswer}
-              </ReactMarkdown>
-            </div>
-          )}
-        </div>
-
-        {/* Input Bar */}
-        <div className="border-t border-zinc-700 p-4 bg-zinc-900">
-          <div className="flex bg-zinc-800 rounded-xl overflow-hidden max-w-3xl mx-auto">
-            <input
-              type="text"
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Ask anything…"
-              className="flex-1 bg-transparent px-4 py-3 outline-none text-sm"
-              onKeyDown={(e) => e.key === "Enter" && ask_query()}
-            />
-            <button
-              onClick={ask_query}
-              className="px-4 bg-zinc-700 hover:bg-zinc-600 transition text-sm"
-            >
-              Ask
-            </button>
-          </div>
-        </div>
-
-      </main>
+        <ChatInput
+          value={query}
+          onChange={setQuery}
+          onSend={send}
+          disabled={loading}
+        />
+      </div>
     </div>
   );
 }
-
-export default App;

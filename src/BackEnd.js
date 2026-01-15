@@ -1,6 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 
-const ai = new GoogleGenAI({ apiKey: "AIzaSyAJLkVrJOrwwk_01s8IIxIsAHfSHvYQZco" });
+const ai = new GoogleGenAI({ apiKey: "Paste Gemini API key" });
 
 export default ai;
 

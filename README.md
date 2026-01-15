@@ -1,6 +1,6 @@
-# 🧠 AI Chatbot Web Application
+# AI Chatbot Web Application
 
-## 📌 Project Description
+## Project Description
 
 This project is a **modern AI-powered chatbot web application** built using **React** and integrated with the **Gemini API**.  
 It provides an interactive chat experience similar to ChatGPT, featuring real-time responses, conversation history, and a clean dark-themed user interface.
@@ -9,7 +9,7 @@ The application is designed with a **modular architecture**, ensuring scalabilit
 
 ---
 
-## 🎯 Objectives of the Project
+## Objectives of the Project
 
 The primary objectives of this project are:
 
@@ -21,19 +21,19 @@ The primary objectives of this project are:
 
 ---
 
-## 🧩 Key Features
+## Key Features
 
-- 💬 AI-powered conversations using Gemini API  
-- 🗂️ Sidebar with conversation history  
-- ✍️ Typewriter-style chatbot replies  
-- 🌙 Dark theme UI  
-- 📱 Responsive layout  
-- 🧠 Stable message identity using unique IDs  
-- 🧩 Modular components and reusable hooks  
+- AI-powered conversations using Gemini API  
+- Sidebar with conversation history  
+- Typewriter-style chatbot replies  
+- Dark theme UI  
+- Responsive layout  
+- Stable message identity using unique IDs  
+- Modular components and reusable hooks  
 
 ---
 
-## 🛠️ Technologies Used
+## Technologies Used
 
 - **Frontend:** React (Functional Components & Hooks)
 - **Styling:** Tailwind CSS
@@ -44,7 +44,7 @@ The primary objectives of this project are:
 
 
 
-## 🧠 How the Application Works
+## How the Application Works
 
 1. User sends a message through the input field  
 2. The message is added to the active conversation with a unique ID  

@@ -50,12 +50,33 @@ export default function App() {
     setQuery("");
 
     try {
+      const history = active.messages.map(m => ({
+        role: m.role === "ai" ? "model" : "user",
+        parts: [{ text: m.text }]
+      }));
+      history.push({ role: "user", parts: [{ text: user.text }] });
+
       const res = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
-        contents: user.text,
+        contents: history,
       });
       setTypingMessageId(aiMsg.id);
       setTypingText(res.text ?? "No response.");
+    } catch (error) {
+      console.error(error);
+      setConversations(prev =>
+        prev.map(c => {
+          if (c.id !== activeId) return c;
+          return {
+            ...c,
+            messages: c.messages.map(m =>
+              m.id === aiMsg.id
+                ? { ...m, text: "Error generating response.", isTyping: false }
+                : m
+            ),
+          };
+        })
+      );
     } finally {
       setLoading(false);
     }
@@ -68,9 +89,11 @@ export default function App() {
         conversations={conversations}
         activeId={activeId}
         onSelect={setActiveId}
-        onNewChat={() =>
-          setConversations([{ id: genId(), title: "New Conversation", messages: [] }, ...conversations])
-        }
+        onNewChat={() => {
+          const newId = genId();
+          setConversations([{ id: newId, title: "New Conversation", messages: [] }, ...conversations]);
+          setActiveId(newId);
+        }}
       />
 
       <div className="flex-1 flex flex-col">

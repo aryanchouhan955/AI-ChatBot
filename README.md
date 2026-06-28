@@ -1,69 +1,80 @@
-# AI Chatbot Web Application
+# 🤖 AI Chatbot Web Application
 
-## Project Description
+[![Live Demo](https://img.shields.io/badge/Live-Demo-blue?style=for-the-badge&logo=netlify)](https://ai-chatbot-application1.netlify.app/)
 
-This project is a **modern AI-powered chatbot web application** built using **React** and integrated with the **Gemini API**.  
-It provides an interactive chat experience similar to ChatGPT, featuring real-time responses, conversation history, and a clean dark-themed user interface.
+A modern, responsive AI-powered chatbot web application built with **React**, **Vite**, and **Tailwind CSS**. It integrates with the **Google Gemini API** to provide an interactive, real-time chat experience featuring conversation history, a sleek dark mode UI, and a typewriter effect for AI responses.
 
-The application is designed with a **modular architecture**, ensuring scalability, maintainability, and stability while avoiding common React issues such as message disappearance and incorrect re-renders.
-
----
-
-## Objectives of the Project
-
-The primary objectives of this project are:
-
-- To build a **real-world AI chatbot interface**
-- To learn and apply **best practices in React development**
-- To implement **clean state management** for dynamic chat data
-- To design a **modular and extensible frontend architecture**
-- To prevent UI bugs caused by unstable keys and shared state
+### 🚀 [Try the Live Demo Here](https://ai-chatbot-application1.netlify.app/)
 
 ---
 
-## Key Features
-
-- AI-powered conversations using Gemini API  
-- Sidebar with conversation history  
-- Typewriter-style chatbot replies  
-- Dark theme UI  
-- Responsive layout  
-- Stable message identity using unique IDs  
-- Modular components and reusable hooks  
+## ✨ Key Features
+- **Smart AI Conversations:** Powered by the Google Gemini API (`gemini-1.5-flash`).
+- **Context-Aware:** Remembers the conversation history for seamless multi-turn chats.
+- **Multiple Chats:** Sidebar to manage and switch between different conversation threads.
+- **Typewriter Effect:** Smooth, character-by-character text rendering for AI replies.
+- **Markdown Support:** Renders bold text, tables, and code blocks beautifully using `react-markdown`.
+- **Modern UI:** Sleek, responsive dark-themed interface built with Tailwind CSS.
 
 ---
 
-## Technologies Used
-
-- **Frontend:** React (Functional Components & Hooks)
+## 🛠️ Technologies Used
+- **Frontend Framework:** React 19 + Vite
 - **Styling:** Tailwind CSS
-- **AI Integration:** Gemini Software Development Kit API 
-- **State Management:** React `useState`, custom hooks
-- **Markdown Rendering:** `react-markdown` with `remark-gfm`
+- **AI Integration:** `@google/genai` (Gemini API)
+- **Markdown Rendering:** `react-markdown` & `remark-gfm`
+- **State Management:** React Hooks (`useState`, `useEffect`, custom hooks)
+
 ---
 
+## ⚙️ How it Works
+1. **User Input:** The user types a message and hits send.
+2. **State Update:** The message is instantly added to the active conversation with a unique ID.
+3. **API Call:** The entire conversation history is bundled and sent to the Gemini API to retain context.
+4. **Response:** The UI displays a placeholder, and once the response is received, it streams in using a custom typewriter effect hook.
+5. **Session Management:** Users can click "New Chat" to start a fresh thread without losing previous threads.
 
+---
 
-## How the Application Works
+## 💻 Local Setup Instructions
 
-1. User sends a message through the input field  
-2. The message is added to the active conversation with a unique ID  
-3. An AI placeholder message is created  
-4. The Gemini API generates a response  
-5. The response is displayed using a typewriter effect  
-6. The conversation history is updated in the sidebar  
+Want to run this project locally? Follow these steps:
 
-Each message is tracked using **stable unique identifiers**, preventing React from reusing incorrect DOM elements.
+### 1. Clone the repository
+```bash
+git clone https://github.com/aryanchouhan955/AI-ChatBot.git
+cd AI-ChatBot
+```
+
+### 2. Install dependencies
+```bash
+npm install
+```
+
+### 3. Set up environment variables
+Create a `.env` file in the root directory and add your Google Gemini API key:
+```env
+VITE_GEMINI_API_KEY=your_gemini_api_key_here
+```
+*(Get your free API key from [Google AI Studio](https://aistudio.google.com/))*
+
+### 4. Run the development server
+```bash
+npm run dev
+```
+The app will be available at `http://localhost:5173`.
 
 ---
 
 ## 📁 Project Structure
-#### src/
-#### ├─ components/ # UI components (Sidebar, ChatHeader, ChatMessages, ChatInput)
-#### ├─ hooks/ # Custom hooks (typing logic)
-#### ├─ utils/ # Utility functions (ID generation)
-#### ├─ App.jsx # Main application logic
-#### ├─ App.css # Global styles
-#### ├─ Backend.jsx # Provide interfacce for colling model through API
-#### └─ main.jsx # Entry point
 
+```text
+src/
+├── components/       # UI components (Sidebar, ChatHeader, ChatMessages, ChatInput)
+├── hooks/            # Custom React hooks (e.g., useChatTyping)
+├── utils/            # Helper functions (e.g., ID generation)
+├── App.jsx           # Main application layout and state
+├── BackEnd.js        # Gemini API initialization
+├── typewriter.js     # Typewriter effect logic
+└── main.jsx          # React entry point
+```
